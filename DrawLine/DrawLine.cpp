@@ -27,7 +27,7 @@ void DDA(int x1, int y1, int x2, int y2)
 			float y = y1;
 			for (; x1 <= x2; x1++)
 			{
-				putpixel(x1, int(y + 0.5), WHITE);
+				putpixel(x1, int(y + 0.5), LIGHTBLUE);
 				y += k;
 			}
 		}
@@ -46,7 +46,7 @@ void DDA(int x1, int y1, int x2, int y2)
 			float factor = 1 / k;
 			for (; y1 <= y2; y1++)
 			{
-				putpixel(int(x + 0.5), y1, WHITE);
+				putpixel(int(x + 0.5), y1, LIGHTBLUE);
 				x += factor;
 			}
 		}
@@ -74,7 +74,7 @@ void Bresenham(int x1, int y1, int x2, int y2)
 	int add = abs(k) > 1 ? 2 * dx : 2 * dy;
 	if (abs(k) <= 1)
 	{
-		putpixel(x1, y1, RED);
+		putpixel(x1, y1, LIGHTRED);
 		while (x1 != x2)
 		{
 			x1 += addX;
@@ -84,13 +84,13 @@ void Bresenham(int x1, int y1, int x2, int y2)
 				d = d - sub;
 			}
 			d = d + add;
-			putpixel(x1, y1, RED);
+			putpixel(x1, y1, LIGHTRED);
 		}
 
 	}
 	else if (abs(k) > 1)
 	{
-		putpixel(x1, y1, RED);
+		putpixel(x1, y1, LIGHTRED);
 		while (y1 != y2)
 		{
 			y1 += addY;
@@ -100,10 +100,35 @@ void Bresenham(int x1, int y1, int x2, int y2)
 				d = d - sub;
 			}
 			d = d + add;
-			putpixel(x1, y1, RED);
+			putpixel(x1, y1, LIGHTRED);
 		}
 	}
 	cout << k << endl;
+}
+
+void CircleBresenham(int x,int y,int r)
+{
+	int d = 1 - r;
+	int X = 0;
+	int Y = r;
+	for (; X <= Y; X++)
+	{
+		putpixel(X + x, Y + y, WHITE);
+		putpixel(Y + y, X + x, WHITE);
+		putpixel(Y + y, -X + x, WHITE);
+		putpixel(-X + x, Y + y, WHITE);
+		putpixel(-X + x, -Y + y, WHITE);
+		putpixel(-Y + y, -X + x, WHITE);
+		putpixel(-Y + y, X + x, WHITE);
+		putpixel(X + x, -Y + y, WHITE);
+		if (d > 0)
+		{
+			d = d - 2 * Y + 2;
+			Y--;
+		}
+		d += 2 * X + 3;
+	}
+
 }
 
 int main()
@@ -113,24 +138,9 @@ int main()
 	//左下角为坐标原点，X轴向右为正，Y轴向上为正
 	setaspectratio(1, -1);
 	setorigin(0, HEIGHT);
-	/*
-	Bresenham(320, 240, 0, 0);
-	Bresenham(320, 240, 160, 0);
-	Bresenham(320, 240, 320, 0);
-	Bresenham(320, 240, 480, 0);
-	Bresenham(320, 240, 640, 0);
-	Bresenham(320, 240, 640, 120);
-	Bresenham(320, 240, 640, 240);
-	Bresenham(320, 240, 640, 360);
-	Bresenham(320, 240, 640, 480);
-	Bresenham(320, 240, 480, 480);
-	Bresenham(320, 240, 320, 480);
-	Bresenham(320, 240, 160, 480);
-	Bresenham(320, 240, 0, 480);
-	Bresenham(320, 240, 0, 360);
-	Bresenham(320, 240, 0, 240);
-	Bresenham(320, 240, 0, 120);
-	*/
+	DDA(200, 300, 900, 500);
+	Bresenham(200, 200, 800, 900);
+	CircleBresenham(500, 500, 300);
 	getchar();
 	return 0;
 }
